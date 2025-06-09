@@ -7,20 +7,33 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+          cache-dependency-path: tests/package-lock.json
+
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-browsers-${{ runner.os }}-${{ hashFiles('e2e-tests/package-lock.json') }}
+          restore-keys: |
+            pw-browsers-${{ runner.os }}-
 
       - name: Install dependencies
+        working-directory: tests
         run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Install Playwright
+        working-directory: tests
         run: npx playwright install --with-deps
 
       - name: Run tests
+        working-directory: tests
         run: npx playwright test
