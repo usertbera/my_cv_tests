@@ -1,13 +1,12 @@
-name: Run Tests on CV Update
+name: E2E Test on Vercel Deploy
 
 on:
   repository_dispatch:
-    types: [cv-updated]
+    types: [vercel-deploy]
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -22,9 +21,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: pw-browsers-${{ runner.os }}-${{ hashFiles('e2e-tests/package-lock.json') }}
-          restore-keys: |
-            pw-browsers-${{ runner.os }}-
+          key: pw-${{ runner.os }}-${{ hashFiles('tests/package-lock.json') }}
 
       - name: Install dependencies
         working-directory: tests
@@ -34,6 +31,6 @@ jobs:
         working-directory: tests
         run: npx playwright install --with-deps
 
-      - name: Run tests
+      - name: Run Playwright Tests
         working-directory: tests
         run: npx playwright test
