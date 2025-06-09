@@ -96,7 +96,7 @@ test.describe('Resume Page - Full Coverage', () => {
   test('Download resume button triggers file download', async ({ page, context }) => {
     const [ download ] = await Promise.all([
       page.waitForEvent('download'),
-      page.locator('text=Download').click()
+      page.locator('text=Resume').click()
     ]);
     const suggestedFilename = download.suggestedFilename();
     expect(suggestedFilename).toMatch(/\.pdf$/);
