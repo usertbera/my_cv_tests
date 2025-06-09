@@ -66,14 +66,20 @@ test.describe('Resume Page - Full Coverage', () => {
     await expect(certs.nth(0)).toHaveAttribute('href', /http/);
   });
 
-  // Projects
   test('Projects section has carousel of project cards with previews', async ({ page }) => {
     await page.locator('nav >> text=Projects').click();
-    const projects = page.locator('#projects .min-w-\\[85vw\\]');
-    const count = await projects.count();
+    // Use a selector that matches cards on all screen sizes
+    const cards = page.locator('#projects .rounded-xl');
+    const count = await cards.count();
     expect(count).toBeGreaterThan(0);
-    await expect(projects.nth(0)).toContainText(/.+/); // Project title
-  });
+
+  // Check the first card contains a project title (link)
+  await expect(cards.nth(0).locator('a')).toHaveText(/.+/);
+
+  // Optionally, check for an image or preview
+  await expect(cards.nth(0).locator('img, span')).toBeVisible();
+});
+
 
   // Contact
   test('Contact section displays email, LinkedIn and GitHub links', async ({ page }) => {

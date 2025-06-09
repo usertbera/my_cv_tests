@@ -35,15 +35,18 @@ test.describe('Mobile Viewport - ResumeSite', () => {
     expect(count).toBeGreaterThan(0);
   });
 
-  test('Project cards scroll horizontally', async ({ page }) => {
-    const carousel = page.locator('#projects .overflow-x-auto');
-    const firstCard = carousel.locator('.snap-center').first();
-    await expect(firstCard).toBeVisible();
+  test('Project cards are stacked vertically on mobile', async ({ page }) => {
+    // Ensure the section is visible
+    const projectsSection = page.locator('#projects');
+    await expect(projectsSection).toBeVisible();
+    const cards = projectsSection.locator('.rounded-xl');
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+    const hasOverflow = await projectsSection.locator('.overflow-x-auto').count();
+    expect(hasOverflow).toBe(0);
+    await expect(cards.nth(0)).toContainText(/.+/); // Project title or content
+    });
 
-    // Simulate swipe left
-    await carousel.evaluate((el: HTMLElement) => el.scrollBy({ left: 300 }));
-    await page.waitForTimeout(300);
-  });
 
   test('Dark mode toggle works on mobile', async ({ page }) => {
     await page.locator('button[aria-label="Toggle dark mode"]').click();
