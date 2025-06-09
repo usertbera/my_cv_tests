@@ -30,7 +30,10 @@ jobs:
       - name: Install Playwright
         working-directory: tests
         run: npx playwright install --with-deps
-
+        
+      - name: Log deployed URL
+        run: echo "🔗 BASE_URL received: $BASE_URL"
+  
       - name: Run Playwright Tests
         working-directory: tests
         run: npx playwright test
