@@ -68,17 +68,24 @@ test.describe('Resume Page - Full Coverage', () => {
 
   test('Projects section has carousel of project cards with previews', async ({ page }) => {
     await page.locator('nav >> text=Projects').click();
-    // Use a selector that matches cards on all screen sizes
     const cards = page.locator('#projects .rounded-xl');
     const count = await cards.count();
     expect(count).toBeGreaterThan(0);
+    await expect(cards.nth(0).locator('a')).toHaveText(/.+/);
+    await expect(cards.nth(0).locator('img, span')).toBeVisible();
+   });
 
-  // Check the first card contains a project title (link)
-  await expect(cards.nth(0).locator('a')).toHaveText(/.+/);
-
-  // Optionally, check for an image or preview
-  await expect(cards.nth(0).locator('img, span')).toBeVisible();
-});
+  //Reviews
+  test('each review card should have name, review, LinkedIn link, and star ratings', async ({ page }) => {
+    const cards = page.locator('section#reviews div.rounded-xl.shadow-lg');
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+    const firstCard = page.locator('section#reviews div.rounded-xl.shadow-lg').first();
+    await expect(firstCard.locator('a.font-semibold')).toBeVisible();
+    await expect(firstCard.locator('a[href*="linkedin.com"]')).toBeVisible();
+    await expect(firstCard.locator('svg.text-yellow-400')).toHaveCount(5);
+    await expect(firstCard.locator('p.text-sm')).not.toHaveText('');
+  });
 
 
   // Contact

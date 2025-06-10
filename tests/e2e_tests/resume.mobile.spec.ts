@@ -47,6 +47,15 @@ test.describe('Mobile Viewport - ResumeSite', () => {
     await expect(cards.nth(0)).toContainText(/.+/); // Project title or content
     });
 
+  test('each review card displays correctly on mobile', async ({ page }) => {
+    const cards = page.locator('section#reviews div.rounded-xl.shadow-lg');
+    const card = cards.first();
+    await expect(card.locator('a.font-semibold')).toBeVisible();
+    await expect(card.locator('a[href*="linkedin.com"]')).toBeVisible();
+    await expect(card.locator('svg.text-yellow-400')).toHaveCount(5);
+    await expect(card.locator('p.text-sm')).not.toHaveText('');
+  });
+
 
   test('Dark mode toggle works on mobile', async ({ page }) => {
     await page.locator('button[aria-label="Toggle dark mode"]').click();
