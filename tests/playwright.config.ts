@@ -7,7 +7,7 @@ export default defineConfig({
     timeout: 5000,
   },
   use: {
-    baseURL: 'http://localhost:3000/', // Adjust if running on a different port
+    baseURL: process.env.BASE_URL || 'http://localhost:3000', // Adjust if running on a different port
     headless: true,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 0,
