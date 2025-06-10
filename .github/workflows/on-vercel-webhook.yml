@@ -33,4 +33,4 @@ jobs:
   
       - name: Run Playwright Tests
         working-directory: tests
-        run: npx playwright test
+        run: npx playwright test --base-url=$BASE_URL
