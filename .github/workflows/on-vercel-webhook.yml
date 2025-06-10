@@ -7,8 +7,10 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -23,14 +25,16 @@ jobs:
           path: ~/.cache/ms-playwright
           key: pw-${{ runner.os }}-${{ hashFiles('tests/package-lock.json') }}
 
-      - name: Install dependencies
+      - name: Install Dependencies
         working-directory: tests
         run: npm ci
 
-      - name: Install Playwright
+      - name: Install Playwright Browsers
         working-directory: tests
         run: npx playwright install --with-deps
-  
+
       - name: Run Playwright Tests
         working-directory: tests
-        run: npx playwright test --base-url=${{ github.event.client_payload.url }}
+        run: npx playwright test
+        env:
+          BASE_URL: ${{ github.event.client_payload.url }}
