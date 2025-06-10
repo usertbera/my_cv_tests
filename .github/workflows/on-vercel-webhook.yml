@@ -38,3 +38,4 @@ jobs:
         run: npx playwright test
         env:
           BASE_URL: ${{ github.event.client_payload.url }}
+          VERCEL_BYPASS_SECRET: ${{ secrets.VERCEL_BYPASS_SECRET }}

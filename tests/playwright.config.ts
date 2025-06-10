@@ -7,7 +7,10 @@ export default defineConfig({
     timeout: 5000,
   },
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000', // Adjust if running on a different port
+    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    extraHTTPHeaders: {
+      'x-vercel-protection-bypass': process.env.VERCEL_BYPASS_SECRET || '',
+    },
     headless: true,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 0,
